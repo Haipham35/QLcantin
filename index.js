@@ -73,7 +73,10 @@ app.post('/', async(req,res) => {
         if (userCheck.rows.length > 0) {
             return res.status(409).json({ error: 'Ten dang nhap da ton tai' }); // Trả về lỗi 409 Conflict nếu tên tài khoản đã tồn tại
         }
-        await pool.query('INSERT INTO public."User" ( id, tendangnhap, pw, hoten, role) VALUES ($1, $2, $3, $4, $5)', [id, tendangnhap, pw, hoten, role]);
+        await pool.query(
+            'INSERT INTO public."User" ( id, tendangnhap, pw, hoten, role) VALUES ($1, $2, $3, $4, $5)', 
+            [id, tendangnhap, pw, hoten, role]
+        );
         res.status(201).json({ id, tendangnhap, pw, hoten, role });
     } catch (err) {
         console.error(err);
