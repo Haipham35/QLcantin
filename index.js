@@ -8,11 +8,11 @@ app.use(express.json());
 //Get all users
 app.get('/', async(req,res) => {
     try {
-        const result = await pool.query('SELECT * FROM public."User"');
+        const result = await pool.query('SELECT * FROM public."User"');// han che select*
         res.json(result.rows);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'server error' });
+        res.status(500).json({ error: 'server error' });//ko tra loi 500 cho ng dung 
     }
 })
 //Get user
@@ -61,7 +61,7 @@ app.put('/:id', async(req,res) => {
 //Create a new user
 app.post('/', async(req,res) => {
     const { tendangnhap, pw, hoten, role } = req.body;
-
+//user tu dang ky ko duoc chon phan quyen
     
     if (!tendangnhap||!pw ||!hoten ||!role) {
         return res.status(400).json({ error: 'Yeu cau dien du thong tin' });
