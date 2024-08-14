@@ -74,7 +74,7 @@
     supplier_item_id uuid PRIMARY KEY,
     supplier_id uuid REFERENCES suppliers(supplier_id) ON DELETE CASCADE,
     item_id uuid REFERENCES items(item_id) ON DELETE CASCADE,
-    cost_price NUMERIC(10, 2) NOT NULL,
+    cost_price NUMERIC(50, 2) NOT NULL,
     supply_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 - categories (
