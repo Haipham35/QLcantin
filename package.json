@@ -4,7 +4,8 @@
   "description": "* USER:\r - xem thống kê chi tiêu hàng tháng, tổng nợ căn tín(nếu có)\r - Đặt suất ăn theo bữa\r - thanh toán\r - xem thông báo từ căn tin (nếu có)\r * ADMIN:\r - tạo thông báo nếu cần\r - Tạo hóa đơn (nợ) Thêm, xóa\r - Tạo User\r - Theo dõi số lượng hàng hóa - quản lý nhập hàng\r - quản lý suất ăn theo từng ngày / bữa\r - quản lý thu chi \r -",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",

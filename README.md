@@ -22,4 +22,77 @@
 - Quản lý thu chi 
     + tổng thu sẽ là tổng hợp của 2 bảng suất ăn, bảng hóa đơn
     + tổng chi lã là tổng hợp của bảng hàng hóa
-- 
+# Table
+- users (
+    user_id uuid PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone_number VARCHAR(15),
+    role char CHECK (role IN ('admin', 'user')) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+- items (
+    item_id uuid PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price NUMERIC(50, 2) NOT NULL,
+    available_quantity INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+- orders (
+    order_id uuid PRIMARY KEY,
+    user_id uuid REFERENCES users(user_id) ON DELETE CASCADE,
+    total_amount NUMERIC(50, 2) NOT NULL,
+    order_status VARCHAR(20) CHECK (order_status IN ('Ghi No', 'Da Thanh Toan', 'canceled')) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+- order_items (
+    order_item_id uuid PRIMARY KEY,
+    order_id uuid REFERENCES orders(order_id) ON DELETE CASCADE,
+    item_id uuid REFERENCES items(item_id),
+    quantity INTEGER NOT NULL,
+    price NUMERIC(50, 2) NOT NULL
+)
+- inventory (
+    inventory_id uuid PRIMARY KEY,
+    item_id uuid REFERENCES items(item_id),
+    quantity INTEGER NOT NULL,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+- suppliers (
+    supplier_id uuid PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    contact_name VARCHAR(100),
+    contact_phone VARCHAR(15),
+    email VARCHAR(100),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+- supplier_items (
+    supplier_item_id uuid PRIMARY KEY,
+    supplier_id uuid REFERENCES suppliers(supplier_id) ON DELETE CASCADE,
+    item_id uuid REFERENCES items(item_id) ON DELETE CASCADE,
+    cost_price NUMERIC(10, 2) NOT NULL,
+    supply_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+- categories (
+    category_id uuid PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+- item_categories (
+    item_category_id uuid PRIMARY KEY,
+    item_id uuid REFERENCES items(item_id) ON DELETE CASCADE,
+    category_id uuid REFERENCES categories(category_id) ON DELETE CASCADE
+)
+- thongbao(
+    idThongBao: uuid PK
+    idUser: uuid Fk
+    noidung: text
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+)
+
