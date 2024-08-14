@@ -90,7 +90,7 @@
 )
 - thongbao(
     idThongBao: uuid PK
-    idUser: uuid Fk
+    user_id: uuid Fk
     noidung: text
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
