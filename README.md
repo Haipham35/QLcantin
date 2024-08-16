@@ -89,10 +89,10 @@
     category_id uuid REFERENCES categories(category_id) ON DELETE CASCADE
 )
 - thongbao(
-    idThongBao: uuid PK
-    user_id: uuid Fk
-    noidung: text
+    idThongBao uuid PRIMARY KEY,
+    user_id uuid  REFERENCES users(user_id),
+    noidung text,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-)
+);
 
