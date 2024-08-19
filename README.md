@@ -34,7 +34,7 @@
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 - items (
-    item_id uuid PRIMARY KEY,
+    item_id uuid PRIMARY KEY,// tham khao suk id
     name VARCHAR(100) NOT NULL,
     description TEXT,
     price NUMERIC(50, 2) NOT NULL,
@@ -55,7 +55,7 @@
     quantity INTEGER NOT NULL,
     price NUMERIC(50, 2) NOT NULL
 )
-- inventory (
+- inventory (// xem lai
     inventory_id uuid PRIMARY KEY,
     item_id uuid REFERENCES items(item_id),
     quantity INTEGER NOT NULL,
@@ -77,7 +77,7 @@
     cost_price NUMERIC(50, 2) NOT NULL,
     supply_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
-- categories (
+- categories (// xem lai thiet ke nhieu nhieu xem can thiet hay k???
     category_id uuid PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
@@ -90,9 +90,58 @@
 )
 - thongbao(
     idThongBao uuid PRIMARY KEY,
-    user_id uuid  REFERENCES users(user_id),
+    user_id uuid  REFERENCES users(user_id),// ko can thiet
     noidung text,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 );
+- sau khi bo quan he nhieu nhieu giua loaij hang va mat hang
+ categories (
+    category_id uuid PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
+ items (
+    item_id uuid PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price NUMERIC(50, 2) NOT NULL,
+    available_quantity INTEGER NOT NULL,
+    category_id uuid REFERENCES categories(category_id) ON DELETE SET NULL, -- Thêm cột này để liên kết với categories
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+# Các chức năng chính trong UI // các chức năng quản lý sẽ giống các nút trong slide bar
+* User
+- Xem thông báo : 
+- click Thông kê chi tiêu: 
+    + hiển thị thổng chi 
+    + hiển thị tổng nợ
+    + hiển thị bảng thống kê theo hàng tháng 
+    + khi click vào cột chi tiêu trong 1 tháng bất kỳ sẽ hiển thị chi tiết tháng đó tiêu những gì in ra dánh ách hóa đơn
+- Click mục đặt đồ ăn
+    + hiển thị danh sách dặt đồ ăn đã đặt từ ngày .. đến ngày .. 
+    + click button tạo yêu cầu đặt đồ ăn... -> hoản thành form 
+- thanh toán: ..nếu còn tg..
+* admin
+- quản lý người dùng :
+    + Click vào quản lý ng dùng trong slide bar
+    + click button ra form tạo user, 
+    + danh sách các user và thanh tìm kiếm, 
+    + khi click vào 1 user bất kỳ có thể xem chi tiết và sửa nếu muốn
+- quản lý nhập hàng: 
+    + click vào quản lý kho hàng trónglide bar
+    + bảng thống kê số lượng hàng hóa
+    + click button nhập hàng -> hiển thị form nhập hàng
+- Quản lý hóa đơn:
+    + click vào quản lý hóa đơn trong slider bar
+    + thanh thông kế những hóa đơn từ ngày.. đến.. nếu để trống sẽ là mặc định chỉ để tỏng hôm nay
+    + click button tạo hóa đơn -> form hóa đơn
+    + thanh tìm kiếm
+??? quản lý suất ăn ???
+- Truyền tải thông báo (thông tin)
+    + click vào thong báo trong slide bar
+    + hiển thị danh sách các thông báo// kèm thanh tìm kiếm
+    + click button tạo thông báo mới _> hiển thì form

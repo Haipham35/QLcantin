@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 const { v4: uuid } = require('uuid');
-const { pool } = require("./connect/db");
+const { pool } = require("./src/connect/db");
 app.use(express.json());
 //Get all users
 app.get('/', async(req,res) => {
