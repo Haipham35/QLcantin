@@ -36,7 +36,7 @@ const Items = sequelize.define('Items', {
   created_at: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-  },
+  }
 }, {
   schema: 'public',
   timestamps: true, 
@@ -46,3 +46,4 @@ Items.belongsTo(Categories, { foreignKey: 'category_id', onDelete: 'SET NULL' })
 Categories.hasMany(Items, { foreignKey: 'category_id' });
 
 module.exports = Items;
+

@@ -96,7 +96,7 @@
 
 );
 - sau khi bo quan he nhieu nhieu giua loaij hang va mat hang
- categories (
+ categories (// co the dung de phan loai suat an 
     category_id uuid PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
@@ -109,21 +109,30 @@
     description TEXT,
     price NUMERIC(50, 2) NOT NULL,
     available_quantity INTEGER NOT NULL,
-    category_id uuid REFERENCES categories(category_id) ON DELETE SET NULL, -- Thêm cột này để liên kết với categories
+    category_id uuid REFERENCES categories(category_id) ON DELETE SET NULL, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 # Các chức năng chính trong UI // các chức năng quản lý sẽ giống các nút trong slide bar
 * User
+- Cập nhật thông tin các nhân
 - Xem thông báo : 
 - click Thông kê chi tiêu: 
-    + hiển thị thổng chi 
+    + hiển thị tổng chi 
     + hiển thị tổng nợ
     + hiển thị bảng thống kê theo hàng tháng 
     + khi click vào cột chi tiêu trong 1 tháng bất kỳ sẽ hiển thị chi tiết tháng đó tiêu những gì in ra dánh ách hóa đơn
+    # Những API cần thiết: 
+        + lấy tổng số tiền của các order trong tháng đó cộng lại in ra tổng cho ng dừng
+        + lấy tổng số tièn của các order trong tháng có trạng thái ghi nợ r hiển htij ra UI
+        + lấy chi tiết các hoá đơn trong tháng đó -> in ra cho ng dùng
+
 - Click mục đặt đồ ăn
     + hiển thị danh sách dặt đồ ăn đã đặt từ ngày .. đến ngày .. 
     + click button tạo yêu cầu đặt đồ ăn... -> hoản thành form 
+    # Những API cần thiết:
+        + lấy dữ liệu hiển thị các order đã đặt trong ngày hôm đó
+        + đẩy req tạo order 
 - thanh toán: ..nếu còn tg..
 * admin
 - quản lý người dùng :
@@ -131,15 +140,27 @@
     + click button ra form tạo user, 
     + danh sách các user và thanh tìm kiếm, 
     + khi click vào 1 user bất kỳ có thể xem chi tiết và sửa nếu muốn
+    # Những API cần thiết :
+     + lấy hết các danh sách dữ liệu ng dùng
+     + create user với role
+     + tìm kiếm user dựa trên dữ liệu ng dùng nhập vào sau đó so sánh với db rồi đưa ra kq
+     + UD user nếu cần 
 - quản lý nhập hàng: 
     + click vào quản lý kho hàng trónglide bar
     + bảng thống kê số lượng hàng hóa
     + click button nhập hàng -> hiển thị form nhập hàng
+    # Những API cần thiết:
+     + lấy dữ liệu item và category 
+     + lấy toàn bộ dữ liệu -> chọn vào category bất kỳ sẽ có nh items phù hợp với category đó
+     + post phiếu nhập hàng gồm hàng gì những items nào , số lượng bao nhiêu 
 - Quản lý hóa đơn:
     + click vào quản lý hóa đơn trong slider bar
     + thanh thông kế những hóa đơn từ ngày.. đến.. nếu để trống sẽ là mặc định chỉ để tỏng hôm nay
     + click button tạo hóa đơn -> form hóa đơn
     + thanh tìm kiếm
+    # Những API cần thiết:
+     + lấy toàn bộ dnah sách order
+     + tạo hóa đơn 
 ??? quản lý suất ăn ???
 - Truyền tải thông báo (thông tin)
     + click vào thong báo trong slide bar

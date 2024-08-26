@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./qlcantin'); 
+const sequelize = require('./db'); 
 
 const Categories = sequelize.define('Categories', {
   category_id: {
