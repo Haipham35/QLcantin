@@ -33,6 +33,14 @@ const Orders = sequelize.define('Orders', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  confirmation_status: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    defaultValue: 'Chưa xác nhận',
+    validate: {
+      isIn: [['Chưa xác nhận', 'Xác nhận']],
+    },
+  },
 }, {
   schema: 'public',
   timestamps: true, 

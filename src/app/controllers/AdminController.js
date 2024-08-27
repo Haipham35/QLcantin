@@ -1,4 +1,6 @@
 const Users = require('../models/Users');
+const Categories = require('../models/Categories');
+
 
 // Lấy tất cả người dùng
 const getAllUsers = async (req, res) => {
@@ -6,7 +8,8 @@ const getAllUsers = async (req, res) => {
     const users = await Users.getAllUsers();
     res.json(users);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json({ error: 'Something went wrong...' });
   }
 };
 
@@ -19,7 +22,8 @@ const getUserById = async (req, res) => {
     }
     res.json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json({ error: 'Something went wrong...' });
   }
 };
 
@@ -38,7 +42,8 @@ const createUser = async (req, res) => {//xem lai
     const newUser = await Users.createUser({ username, password, full_name, email, role,  });
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json({ error: 'Something went wrong...' });
   }
 };
 
@@ -66,7 +71,8 @@ const updateUser = async (req, res) => {
     // const updatedUser = await Users.findByPk(userId);
     res.status(201).json({ message: 'Updated'});
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json({ error: 'Something went wrong...' });
   }
 };
 
@@ -76,9 +82,95 @@ const deleteUser = async (req, res) => {
     await Users.deleteUser(req.params.id);
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json({ error: 'Something went wrong...' });
   }
 };
+
+// Create a new category
+const createCategory = async (req, res) => {
+    const { name, description } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+    try {
+      const newCategory = await Categories.create({ name, description });
+      res.status(201).json(newCategory);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Something went wrong...' });
+    }
+};
+  
+  // Get all categories
+const getAllCategories = async (req, res) => {
+    try {
+      const categories = await Categories.findAll();
+      res.status(200).json(categories);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Something went wrong...' });
+    }
+};
+  
+  // Get a category by ID
+const getCategoryById = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const category = await Categories.findByPk(id);
+      if (category) {
+        res.status(200).json(category);
+      } else {
+        res.status(404).json({ error: 'Category not found' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Something went wrong...' });
+    }
+};
+  
+  // Update a category by ID
+const updateCategory = async (req, res) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    try {
+      const [updated] = await Categories.update({ name, description }, {
+        where: { category_id: id }
+      });
+      if (updated) {
+        const updatedCategory = await Categories.findByPk(id);
+        res.status(200).json(updatedCategory);
+      } else {
+        res.status(404).json({ error: 'Category not found' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Something went wrong...' });
+    }
+};
+  
+  // Delete a category by ID
+const deleteCategory = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const deleted = await Categories.destroy({
+        where: { category_id: id }
+      });
+      if (deleted) {
+        res.status(204).json('Deleted');
+      } else {
+        res.status(404).json({ error: 'Category not found' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Something went wrong...' });
+    }
+};
+
+
+
+
+
 
 module.exports = {
   getAllUsers,
@@ -86,4 +178,9 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  createCategory,
+  getAllCategories,
+  getCategoryById,
+  updateCategory,
+  deleteCategory,
 };

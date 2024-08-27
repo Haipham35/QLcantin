@@ -47,7 +47,7 @@ const Users = sequelize.define('Users', {
   schema: 'public',
   timestamps: true, 
   createdAt: 'created_at', // Đổi tên cột createdAt thành created_at
-  updatedAt: 'updated_at', // Đổi tên cột updatedAt thành updated_at
+  updatedAt: 'updated_at', // Đổi tên cột updatedAt thành updated_at  
   tableName: 'users',
   hooks: {
     beforeCreate: async (users) => {
