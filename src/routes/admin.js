@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const AdminRouter = require('../app/controllers/AdminController');
 const ItemRouter = require('../app/models/Items');
+const ThongBaoRouter = require('../app/models/Thongbao');
 
 // Lấy tất cả người dùng
 router.get('/', AdminRouter.getAllUsers);
@@ -21,11 +22,17 @@ router.get('/categories', AdminRouter.getAllCategories);
 router.get('/categories/:id', AdminRouter.getCategoryById);
 router.put('/categories/:id', AdminRouter.updateCategory);
 router.delete('/categories/:id', AdminRouter.deleteCategory);
-
+//quan ly san pham
 router.post('/items', ItemRouter.createItem);
 router.get('/items', ItemRouter.getAllItems);
 router.get('/items/:item_id', ItemRouter.getItemById);
 router.put('/items/:item_id', ItemRouter.updateItem);
 router.delete('/items/:item_id', ItemRouter.deleteItem);
+//quan ly thong bao
+router.get('/thongbao', ThongBaoRouter.getAllThongBaos);
+router.get('/thongbao/:idThongBao', ThongBaoRouter.getThongBaoById);
+router.post('/thongbao', ThongBaoRouter.createThongBao);
+router.put('/thongbao/:idThongBao', ThongBaoRouter.updateThongBaoById);
+router.delete('/thongbao/:idThongBao', ThongBaoRouter.deleteThongBaoById); 
 
 module.exports = router;

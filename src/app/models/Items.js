@@ -51,6 +51,9 @@ Items.createItem = async (req, res) => {
   const { name, description, price, available_quantity, category_id } = req.body;
 
   try {
+    if ((category_id === '8f6fe2fb-8d7b-484a-96d9-f307f56e7837' || category_id === 'c9191720-33a2-4990-a295-9aee0867ec86') && (!available_quantity || available_quantity === '')) {
+      return res.status(400).json({ error: "available_quantity không được để trống " });
+    }
     const newItem = await Items.create({
       name,
       description,
@@ -60,7 +63,8 @@ Items.createItem = async (req, res) => {
     });
     res.status(201).json(newItem);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 // Lấy tất cả các item
@@ -71,7 +75,8 @@ Items.getAllItems = async (req, res) => {
     });
     res.status(200).json(items);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 
@@ -90,7 +95,8 @@ Items.getItemById = async (req, res) => {
 
     res.status(200).json(item);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 Items.updateItem = async (req, res) => {
@@ -114,7 +120,8 @@ Items.updateItem = async (req, res) => {
 
     res.status(200).json(item);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 Items.deleteItem = async (req, res) => {
@@ -130,7 +137,8 @@ Items.deleteItem = async (req, res) => {
     await item.destroy();
     res.status(204).send(); // 204 No Content
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 

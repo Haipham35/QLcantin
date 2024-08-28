@@ -34,7 +34,8 @@ Categories.createCategory = async function(CategoriesData) {
     const newCategory = await Categories.create(CategoriesData);
     return newCategory;
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 
@@ -44,7 +45,8 @@ Categories.getAllCategories = async (req, res) => {
     const categories = await Categories.findAll();
     res.status(200).json(categories);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 
@@ -59,7 +61,8 @@ Categories.getCategoryById = async (req, res) => {
       res.status(404).json({ error: 'Category not found' });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 
@@ -78,7 +81,8 @@ Categories.updateCategory = async (req, res) => {
       res.status(404).json({ error: 'Category not found' });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 
@@ -95,7 +99,8 @@ Categories.deleteCategory = async (req, res) => {
       res.status(404).json({ error: 'Category not found' });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    res.status(500).json('Something went wrong...');
   }
 };
 

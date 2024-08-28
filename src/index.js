@@ -6,6 +6,7 @@ const { v4: uuid } = require('uuid');
 const AdminRouter = require('./routes/admin');
 const router = require('./routes');
 app.use(express.json()); // Để parse JSON request body
+
 router(app);
 
 
