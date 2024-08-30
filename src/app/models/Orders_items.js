@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./qlcantin'); 
+const sequelize = require('./connect/db'); 
 const Orders = require('./Orders'); 
 const Items = require('./Items');
 

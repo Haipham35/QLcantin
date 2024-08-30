@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./qlcantin'); 
+const sequelize = require('./connect/db'); 
 const Users = require('./Users'); 
 
 const Orders = sequelize.define('Orders', {
@@ -44,6 +44,8 @@ const Orders = sequelize.define('Orders', {
 }, {
   schema: 'public',
   timestamps: true, 
+  createdAt: 'created_at', // Đổi tên cột createdAt thành created_at
+  updatedAt: 'updated_at', // Đổi tên cột updatedAt thành updated_at
   tableName: 'orders', 
 });
 

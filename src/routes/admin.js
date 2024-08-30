@@ -4,17 +4,18 @@ const router = express.Router();
 const AdminRouter = require('../app/controllers/AdminController');
 const ItemRouter = require('../app/models/Items');
 const ThongBaoRouter = require('../app/models/Thongbao');
+const OrdersRouter = require('../app/controllers/OrdersController');
 
 // Lấy tất cả người dùng
-router.get('/', AdminRouter.getAllUsers);
+router.get('/users', AdminRouter.getAllUsers);
 // Lấy người dùng theo ID
-router.get('/:id', AdminRouter.getUserById);
+router.get('/user/:id', AdminRouter.getUserById);
 // Tạo người dùng mới
-router.post('/', AdminRouter.createUser);
+router.post('/user', AdminRouter.createUser);
 // Cập nhật người dùng
-router.put('/:id', AdminRouter.updateUser);
+router.put('/user/:id', AdminRouter.updateUser);
 // Xóa người dùng
-router.delete('/:id', AdminRouter.deleteUser);
+router.delete('/user/:id', AdminRouter.deleteUser);
 
 // quan ly hang muc
 router.post('/categories', AdminRouter.createCategory);
@@ -34,5 +35,9 @@ router.get('/thongbao/:idThongBao', ThongBaoRouter.getThongBaoById);
 router.post('/thongbao', ThongBaoRouter.createThongBao);
 router.put('/thongbao/:idThongBao', ThongBaoRouter.updateThongBaoById);
 router.delete('/thongbao/:idThongBao', ThongBaoRouter.deleteThongBaoById); 
+
+//quan ly don hang
+router.post('/create-order', OrdersRouter.createOrder);
+router.put('/confirm-order/:order_id',OrdersRouter.confirmOrder);
 
 module.exports = router;
