@@ -5,7 +5,26 @@ const port = 3000;
 const { v4: uuid } = require('uuid');
 const AdminRouter = require('./routes/admin');
 const router = require('./routes');
+const session = require('express-session');
+
 app.use(express.json()); // Để parse JSON request body
+
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}))
+app.use(async function (req, res, next) {
+    if (req.session.isAuthenticated === null) {
+        req.session.isAuthenticated = false
+    }
+    res.locals.IsAuthenticated = req.session.isAuthenticated
+    res.locals.AuthUser = req.session.authUser
+    next()
+})
+
 
 router(app);
 

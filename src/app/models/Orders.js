@@ -22,25 +22,19 @@ const Orders = sequelize.define('Orders', {
     type: DataTypes.DECIMAL(50, 2),
     allowNull: false,
   },
-  order_status: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    validate: {
-      isIn: [['Ghi No', 'Da Thanh Toan', 'canceled']], // Ràng buộc giá trị
-    },
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  confirmation_status: {
+  status: {
     type: DataTypes.STRING(20),
     allowNull: false,
     defaultValue: 'Chưa xác nhận',
     validate: {
-      isIn: [['Chưa xác nhận', 'Xác nhận']],
+        isIn: [['Chưa xác nhận', 'Xác nhận - Ghi No', 'Xác nhận - Da Thanh Toan']],
     },
+},
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
   },
+
 }, {
   schema: 'public',
   timestamps: true, 
