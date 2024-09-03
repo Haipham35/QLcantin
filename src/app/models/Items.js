@@ -51,9 +51,17 @@ Items.createItem = async (req, res) => {
   const { name, description, price, available_quantity, category_id } = req.body;
 
   try {
-    if ((category_id === '8f6fe2fb-8d7b-484a-96d9-f307f56e7837' || category_id === 'c9191720-33a2-4990-a295-9aee0867ec86') && (!available_quantity || available_quantity === '')) {
-      return res.status(400).json({ error: "available_quantity không được để trống " });
+    const categories = await Categories.findAll({
+      where: {
+        name: ['Thức ăn', 'Thức uống']
+      },
+      attributes: ['category_id']
+    });
+    const categoryIds = categories.map(category => category.category_id);
+    if (categoryIds.indexOf(category_id) !== -1 && (!available_quantity || available_quantity === '')) {
+      return res.status(400).json({ error: "available_quantity không được để trống" });
     }
+
     const newItem = await Items.create({
       name,
       description,

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
-const { v4: uuid } = require('uuid');
+
 const AdminRouter = require('./routes/admin');
 const router = require('./routes');
 const session = require('express-session');

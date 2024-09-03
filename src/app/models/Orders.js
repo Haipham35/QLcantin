@@ -27,7 +27,7 @@ const Orders = sequelize.define('Orders', {
     allowNull: false,
     defaultValue: 'Chưa xác nhận',
     validate: {
-        isIn: [['Chưa xác nhận', 'Xác nhận - Ghi No', 'Xác nhận - Da Thanh Toan']],
+        isIn: [['Chưa xác nhận', 'Xác nhận - Ghi No', 'Xác nhận - Da Thanh Toan, Huy']],
     },
 },
   created_at: {

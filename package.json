@@ -4,7 +4,7 @@
   "description": "* USER:\r - xem thống kê chi tiêu hàng tháng, tổng nợ căn tín(nếu có)\r - Đặt suất ăn theo bữa\r - thanh toán\r - xem thông báo từ căn tin (nếu có)\r * ADMIN:\r - tạo thông báo nếu cần\r - Tạo hóa đơn (nợ) Thêm, xóa\r - Tạo User\r - Theo dõi số lượng hàng hóa - quản lý nhập hàng\r - quản lý suất ăn theo từng ngày / bữa\r - quản lý thu chi \r -",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test node src/index.js",
     "start": "node index.js"
   },
   "author": "",
@@ -12,6 +12,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "pg": "^8.12.0",

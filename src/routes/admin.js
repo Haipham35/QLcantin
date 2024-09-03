@@ -40,5 +40,7 @@ router.delete('/thongbao/:idThongBao',restrict, ThongBaoRouter.deleteThongBaoByI
 //quan ly don hang
 router.post('/create-order',restrict, OrdersRouter.createOrder);
 router.put('/confirm-order/:order_id',restrict, OrdersRouter.confirmOrder);
+router.post('/cancel-order/:order_id ',restrict, OrdersRouter.cancelOrder)
+
 
 module.exports = router;
