@@ -43,5 +43,5 @@ const lo = async (req,res) => {
         res.redirect('/');
     });
 };
-s
+
 module.exports = {login,lo};
