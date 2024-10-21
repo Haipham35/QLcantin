@@ -30,7 +30,7 @@ const getUserById = async (req, res) => {
 // Tạo người dùng mới
 const createUser = async (req, res) => {//xem lai
 //   const {  ...rest } = req.body;
-  const { username, password, full_name, email, role = 'user' } = req.body;
+  const { username, password, full_name, email, role } = req.body;
   if (!username ||!password ||!full_name ||!email ) {
       return res.status(400).json({ error: 'Yeu cau nhap du thong tin' });
   }

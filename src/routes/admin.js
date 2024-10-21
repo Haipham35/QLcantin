@@ -8,39 +8,39 @@ const OrdersRouter = require('../app/controllers/OrdersController');
 const restrict = require('../middleware');
 
 // Lấy tất cả người dùng
-router.get('/users',restrict, AdminRouter.getAllUsers);
+router.get('/users',restrict.checkAdmin, AdminRouter.getAllUsers);
 // Lấy người dùng theo ID
-router.get('/user/:id',restrict, AdminRouter.getUserById);
+router.get('/user/:id',restrict.checkAdmin, AdminRouter.getUserById);
 // Tạo người dùng mới
-router.post('/user',restrict, AdminRouter.createUser);
+router.post('/user',restrict.checkAdmin, AdminRouter.createUser);
 // Cập nhật người dùng
-router.put('/user/:id',restrict, AdminRouter.updateUser);
+router.put('/user/:id',restrict.checkAdmin, AdminRouter.updateUser);
 // Xóa người dùng
-router.delete('/user/:id',restrict, AdminRouter.deleteUser);
+router.delete('/user/:id',restrict.checkAdmin, AdminRouter.deleteUser);
 
 // quan ly hang muc
-router.post('/categories',restrict, AdminRouter.createCategory);
-router.get('/categories',restrict, AdminRouter.getAllCategories);
-router.get('/categories/:id',restrict, AdminRouter.getCategoryById);
-router.put('/categories/:id',restrict, AdminRouter.updateCategory);
-router.delete('/categories/:id',restrict, AdminRouter.deleteCategory);
+router.post('/categories',restrict.checkAdmin, AdminRouter.createCategory);
+router.get('/categories',restrict.checkAdmin, AdminRouter.getAllCategories);
+router.get('/categories/:id',restrict.checkAdmin, AdminRouter.getCategoryById);
+router.put('/categories/:id',restrict.checkAdmin, AdminRouter.updateCategory);
+router.delete('/categories/:id',restrict.checkAdmin, AdminRouter.deleteCategory);
 //quan ly san pham
-router.post('/items',restrict, ItemRouter.createItem);
-router.get('/items',restrict, ItemRouter.getAllItems);
-router.get('/items/:item_id',restrict, ItemRouter.getItemById);
-router.put('/items/:item_id',restrict, ItemRouter.updateItem);
-router.delete('/items/:item_id',restrict, ItemRouter.deleteItem);
+router.post('/items',restrict.checkAdmin, ItemRouter.createItem);
+router.get('/items',restrict.checkAdmin, ItemRouter.getAllItems);
+router.get('/items/:item_id',restrict.checkAdmin, ItemRouter.getItemById);
+router.put('/items/:item_id',restrict.checkAdmin, ItemRouter.updateItem);
+router.delete('/items/:item_id',restrict.checkAdmin, ItemRouter.deleteItem);
 //quan ly thong bao
-router.get('/thongbao',restrict, ThongBaoRouter.getAllThongBaos);
-router.get('/thongbao/:idThongBao',restrict, ThongBaoRouter.getThongBaoById);
-router.post('/thongbao',restrict, ThongBaoRouter.createThongBao);
-router.put('/thongbao/:idThongBao',restrict, ThongBaoRouter.updateThongBaoById);
-router.delete('/thongbao/:idThongBao',restrict, ThongBaoRouter.deleteThongBaoById); 
+router.get('/thongbao',restrict.checkAdmin, ThongBaoRouter.getAllThongBaos);
+router.get('/thongbao/:idThongBao',restrict.checkAdmin, ThongBaoRouter.getThongBaoById);
+router.post('/thongbao',restrict.checkAdmin, ThongBaoRouter.createThongBao);
+router.put('/thongbao/:idThongBao',restrict.checkAdmin, ThongBaoRouter.updateThongBaoById);
+router.delete('/thongbao/:idThongBao',restrict.checkAdmin, ThongBaoRouter.deleteThongBaoById); 
 
 //quan ly don hang
-router.post('/create-order',restrict, OrdersRouter.createOrder);
-router.put('/confirm-order/:order_id',restrict, OrdersRouter.confirmOrder);
-router.post('/cancel-order/:order_id ',restrict, OrdersRouter.cancelOrder)
+router.post('/create-order',restrict.checkAdmin, OrdersRouter.createOrder);
+router.put('/confirm-order/:order_id',restrict.checkAdmin, OrdersRouter.confirmOrder);
+router.post('/cancel-order/:order_id ',restrict.checkAdmin, OrdersRouter.cancelOrder)
 
 
 module.exports = router;

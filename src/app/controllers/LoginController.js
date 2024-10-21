@@ -1,39 +1,39 @@
 const Users = require("../models/Users");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 
 
 const login = async (req,res,next) => {
     try{
     const {username, password} = req.body;
+    console.log('Finding user...');
 
     const user = await Users.findOne({where: {username: username}})
-
-    if (user) {
-        // So sánh mật khẩu người dùng nhập với mật khẩu đã băm lưu trong cơ sở dữ liệu
-        const isMatch = await user.comparePassword(password);
-
-        if (isMatch) {
-            // Xóa mật khẩu khỏi đối tượng user để bảo mật
-            user.password = null
-            // Đặt session
-            req.session.isAuthenticated = true;
-            req.session.authUser = user;
-
-            // Điều hướng dựa trên quyền hạn của người dùng
-            if (req.session.authUser.permission === "user") {
-                res.redirect('/user/');
-            } else if (req.session.authUser.permission === "admin") {
-                res.redirect('/admin/');
-            }
-        } else {
-            res.send('Email hoặc mật khẩu không chính xác');
-        }
-    } else {
-        res.send('Email hoặc mật khẩu không chính xác');
+    console.log('User found:', user);
+    if (!user) {
+        return res.status(401).json({ message: 'Username or password is incorrect' });
     }
+
+    // So sánh mật khẩu
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return res.status(401).json({ message: 'Username or password is incorrect' });
+    }
+
+    // Tạo JWT token
+    const token = jwt.sign(
+        { user_id: user.user_id, role: user.role },
+        'black myth: wukong', // Thay thế bằng secret của bạn, lưu ý không để lộ
+        { expiresIn: '1h' }
+    );
+
+    // Trả về token và thông tin người dùng
+    res.json({ token, user: { username: user.username, role: user.role } });
     }catch(err){
         console.log(err);
         res.status(500).json({error: 'Something went wrong...'})
-        next();
+        // next();
     }
      
 }
