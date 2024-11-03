@@ -23,13 +23,19 @@ const login = async (req,res,next) => {
 
     // Tạo JWT token
     const token = jwt.sign(
-        { user_id: user.user_id, role: user.role },
+        {   user_id: user.id,
+            username: user.username,
+            full_name: user.full_name,
+            email: user.email,
+            phone_number: user.phone_number,
+            role: user.role,
+            createdAt: user.createdAt },
         'black myth: wukong', // Thay thế bằng secret của bạn, lưu ý không để lộ
         { expiresIn: '1h' }
     );
 
     // Trả về token và thông tin người dùng
-    res.json({ token, user: { username: user.username, role: user.role } });
+    res.json({ token, user: { username: user.username, user_id: user.user_id, role: user.role } });
     }catch(err){
         console.log(err);
         res.status(500).json({error: 'Something went wrong...'})

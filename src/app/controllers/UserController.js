@@ -1,6 +1,6 @@
 const  Orders = require('../models/Orders');
 const  OrderItems  = require('../models/Orders_items');
-
+const Users = require('../models/Users');
 const cancelOrder = async (req, res) => {
     const { order_id } = req.params;
   
@@ -38,7 +38,23 @@ const cancelOrder = async (req, res) => {
         res.status(500).json({ error: 'Có lỗi xảy ra khi hủy đơn hàng.' });
     }
 };
+const getUserInfo = async (req, res) => {
+    try {
+      // Lấy thông tin người dùng từ token đã xác thực
+      
+      const user = req.user ;
+      console.log('user get for:', user);
+      if (!user) {
+        return res.status(404).json({ error: 'Người dùng không tồn tại' });
+      }
+      
+      // Trả về thông tin cá nhân
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ error: 'Có lỗi xảy ra khi lấy thông tin người dùng' });
+    }
+  };
 
 module.exports = {
-    cancelOrder,
+    cancelOrder, getUserInfo
 };
