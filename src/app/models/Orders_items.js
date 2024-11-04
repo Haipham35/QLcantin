@@ -14,7 +14,7 @@ const Order_items = sequelize.define('Order_items', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'orders', 
+      model: 'Orders', 
       key: 'order_id',
     },
     onDelete: 'CASCADE', 
@@ -23,7 +23,7 @@ const Order_items = sequelize.define('Order_items', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'items', 
+      model: 'Items', 
       key: 'item_id', 
     },
   },
@@ -42,7 +42,5 @@ const Order_items = sequelize.define('Order_items', {
 });
 
 
-Order_items.belongsTo(Orders, { foreignKey: 'order_id', onDelete: 'CASCADE' });
-Order_items.belongsTo(Items, { foreignKey: 'item_id' });
 
 module.exports = Order_items;

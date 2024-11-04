@@ -3,16 +3,49 @@ const  OrderItems  = require('../models/Orders_items');
 const  Items  = require('../models/Items');
 const { Categories } = require('../models/Categories');
 const { Users } = require('../models/Users');
+const jwt = require('jsonwebtoken')
 
 // Tạo đơn hàng mới
 const createOrder = async (req, res) => {// khi tao bang admin van chua chyen duoc trang thai????
-    const { user_id, items, status } = req.body;
-    const role = req.session.authUser ? req.session.authUser.permission : 'user';
-    console.log('Role:', role);
+    const {  items, status } = req.body;
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]; // Lấy token từ header
+    let user_id;
+    let role;
+    const decoded = jwt.decode(token, 'black myth: wukong'); // Xác thực và giải mã token
+    console.log('Decoded Token:', decoded);
+    console.log('User ID:', decoded.user_id);
+    console.log('Role:', decoded.role);
+    if (token) {
+        try {
+            // Kiểm tra vai trò
+            if (decoded.role === 'user ') {
+                // Gán user_id từ token nếu là user
+                user_id = decoded.user_id;
+            } else if (decoded.role === 'admin') {
+                // Nếu là admin, yêu cầu truyền user_id từ request
+                user_id = req.body.user_id;
+                if (!user_id) {
+                    return res.status(400).json({ error: 'Admin phải cung cấp user_id.' });
+                }
+            } else {
+                console.log('Vai trò không hợp lệ trong token.');
+                return res.status(403).json({ error: 'Vai trò không hợp lệ.' });
+            }
+        } catch (error) {
+            console.error('Lỗi khi xác thực token:', error);
+            return res.status(403).json({ error: 'Token không hợp lệ.' });
+        }
+    } else {
+        console.log('Token không được cung cấp.');
+        return res.status(403).json({ error: 'Token không được cung cấp.' });
+    }
+
+    
     console.log('Status from request:', status);
+
     try {
       let confirmstatus=''
-      if (role === 'admin') {
+      if (decoded.role === 'admin') {
         console.log('Admin role detected');
 
         console.log(confirmstatus);
@@ -216,12 +249,52 @@ const cancelOrder = async (req, res) => {
       res.status(500).json({ error: 'Có lỗi xảy ra khi hủy đơn hàng.' });
   }
 };
+const getAllOrders = async (req, res) => {
+    try {
+        const orders = await Orders.findAll();
+        res.json(orders);
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Có loi xảy ra khi lấy danh sách đơn hàng.' });
+    
+    }
+}
+const getOrderById = async (req, res) => {
+    const { order_id } = req.params;
+    try {
+        const order = await Orders.findOne({
+            where: { order_id },
+            include: [
+                {
+                    model: OrderItems,
+                    include: [
+                        {
+                            model: Items,
+                            attributes: ['item_id', 'name', 'price', 'description'],
+                        },
+                    ],
+                },
+            ],
+        });
+
+        if (!order) {
+            return res.status(404).json({ error: 'Không tìm thấy đơn hàng.' });
+        }
+
+        res.json(order);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Có lỗi xảy ra khi lấy thông tin đơn hàng.' });
+    }
+};
 
 module.exports = {
     createOrder,
     confirmOrder,
     updateOrder,
     cancelOrder,
-
+    getAllOrders,
+    getOrderById,
     
 };

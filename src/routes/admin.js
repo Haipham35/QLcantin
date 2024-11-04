@@ -41,6 +41,8 @@ router.delete('/thongbao/:idthongbao',restrict.checkAdmin, ThongBaoRouter.delete
 router.post('/create-order',restrict.checkAdmin, OrdersRouter.createOrder);
 router.put('/confirm-order/:order_id',restrict.checkAdmin, OrdersRouter.confirmOrder);
 router.post('/cancel-order/:order_id ',restrict.checkAdmin, OrdersRouter.cancelOrder);
+router.get('/orders',restrict.checkAdmin, OrdersRouter.getAllOrders);
+router.get('/order/:order_id',restrict.checkAdmin, OrdersRouter.getOrderById);
 
 
 

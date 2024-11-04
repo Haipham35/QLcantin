@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./connect/db'); 
 const Users = require('./Users'); 
+const OrderItems = require('./Orders_items');
+const Items = require('./Items');
 
 const Orders = sequelize.define('Orders', {
   order_id: {
@@ -27,7 +29,7 @@ const Orders = sequelize.define('Orders', {
     allowNull: false,
     defaultValue: 'Chưa xác nhận',
     validate: {
-        isIn: [['Chưa xác nhận', 'Xác nhận - Ghi No', 'Xác nhận - Da Thanh Toan, Huy']],
+        isIn: [['Chưa xác nhận', 'Xác nhận - Ghi No', 'Xác nhận - Da Thanh Toan', 'Huy']],
     },
 },
   created_at: {
@@ -44,5 +46,8 @@ const Orders = sequelize.define('Orders', {
 });
 
 Orders.belongsTo(Users, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+Orders.hasMany(OrderItems, { foreignKey: 'order_id', onDelete: 'CASCADE' }); // Quan hệ 1-n với Order_items
+OrderItems.belongsTo(Orders, { foreignKey: 'order_id', onDelete: 'CASCADE' });
+OrderItems.belongsTo(Items, { foreignKey: 'item_id' });
 
 module.exports = Orders;

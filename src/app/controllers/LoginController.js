@@ -23,7 +23,7 @@ const login = async (req,res,next) => {
 
     // Tạo JWT token
     const token = jwt.sign(
-        {   user_id: user.id,
+        {   user_id: user.user_id,
             username: user.username,
             full_name: user.full_name,
             email: user.email,
@@ -33,6 +33,8 @@ const login = async (req,res,next) => {
         'black myth: wukong', // Thay thế bằng secret của bạn, lưu ý không để lộ
         { expiresIn: '1h' }
     );
+    const decoded = jwt.decode(token);
+    console.log('Decoded Token:', decoded);
 
     // Trả về token và thông tin người dùng
     res.json({ token, user: { username: user.username, user_id: user.user_id, role: user.role } });
