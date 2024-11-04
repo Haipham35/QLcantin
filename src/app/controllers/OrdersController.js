@@ -2,6 +2,7 @@ const  Orders = require('../models/Orders');
 const  OrderItems  = require('../models/Orders_items');
 const  Items  = require('../models/Items');
 const { Categories } = require('../models/Categories');
+const { Users } = require('../models/Users');
 
 // Tạo đơn hàng mới
 const createOrder = async (req, res) => {// khi tao bang admin van chua chyen duoc trang thai????
@@ -215,10 +216,12 @@ const cancelOrder = async (req, res) => {
       res.status(500).json({ error: 'Có lỗi xảy ra khi hủy đơn hàng.' });
   }
 };
+
 module.exports = {
     createOrder,
     confirmOrder,
     updateOrder,
     cancelOrder,
+
     
 };

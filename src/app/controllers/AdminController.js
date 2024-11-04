@@ -157,7 +157,7 @@ const deleteCategory = async (req, res) => {
         where: { category_id: id }
       });
       if (deleted) {
-        res.status(204).json('Deleted');
+        res.status(204).json({message: 'Deleted...'});
       } else {
         res.status(404).json({ error: 'Category not found' });
       }

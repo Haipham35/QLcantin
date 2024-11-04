@@ -31,16 +31,17 @@ router.get('/items/:item_id',restrict.checkAdmin, ItemRouter.getItemById);
 router.put('/items/:item_id',restrict.checkAdmin, ItemRouter.updateItem);
 router.delete('/items/:item_id',restrict.checkAdmin, ItemRouter.deleteItem);
 //quan ly thong bao
-router.get('/thongbao',restrict.checkAdmin, ThongBaoRouter.getAllThongBaos);
-router.get('/thongbao/:idThongBao',restrict.checkAdmin, ThongBaoRouter.getThongBaoById);
+router.get('/thongbaos',restrict.checkAdmin, ThongBaoRouter.getAllThongBaos);
+router.get('/thongbao/:idthongbao',restrict.checkAdmin, ThongBaoRouter.getThongBaoById);
 router.post('/thongbao',restrict.checkAdmin, ThongBaoRouter.createThongBao);
-router.put('/thongbao/:idThongBao',restrict.checkAdmin, ThongBaoRouter.updateThongBaoById);
-router.delete('/thongbao/:idThongBao',restrict.checkAdmin, ThongBaoRouter.deleteThongBaoById); 
+router.put('/thongbao/:idthongbao',restrict.checkAdmin, ThongBaoRouter.updateThongBaoById);
+router.delete('/thongbao/:idthongbao',restrict.checkAdmin, ThongBaoRouter.deleteThongBaoById); 
 
 //quan ly don hang
 router.post('/create-order',restrict.checkAdmin, OrdersRouter.createOrder);
 router.put('/confirm-order/:order_id',restrict.checkAdmin, OrdersRouter.confirmOrder);
-router.post('/cancel-order/:order_id ',restrict.checkAdmin, OrdersRouter.cancelOrder)
+router.post('/cancel-order/:order_id ',restrict.checkAdmin, OrdersRouter.cancelOrder);
+
 
 
 module.exports = router;
