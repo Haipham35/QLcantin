@@ -1,5 +1,7 @@
 const Users = require('../models/Users');
 const Categories = require('../models/Categories');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 
 // Lấy tất cả người dùng
@@ -66,6 +68,7 @@ const updateUser = async (req, res) => {
     existingUser.full_name = updatedData.full_name || existingUser.full_name;
     existingUser.email = updatedData.email || existingUser.email;
     existingUser.phone_number = updatedData.phone_number || existingUser.phone_number;
+    existingUser.role = updatedData.role || existingUser.role;
     await existingUser.save();
     
     // const updatedUser = await Users.findByPk(userId);
@@ -166,9 +169,34 @@ const deleteCategory = async (req, res) => {
       res.status(500).json({ error: 'Something went wrong...' });
     }
 };
+const changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
+    const decoded = jwt.decode(token, 'black myth: wukong');
+    let userId = decoded.user_id;
+    try {
+      // Tìm người dùng trong cơ sở dữ liệu
+      const user = await Users.findByPk(userId);
+      if (!user) return res.status(404).json({ error: 'User not found' });
 
+      // Kiểm tra mật khẩu hiện tại
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+          return res.status(400).json({ error: 'Current password is incorrect' });
+      }
 
+      // Mã hoá mật khẩu mới và lưu vào cơ sở dữ liệu
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
 
+      res.status(200).json({ message: 'Password changed successfully' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong...' });
+  }
+
+};
 
 
 
@@ -183,4 +211,6 @@ module.exports = {
   getCategoryById,
   updateCategory,
   deleteCategory,
+  changePassword,
+
 };

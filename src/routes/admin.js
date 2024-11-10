@@ -7,6 +7,10 @@ const ThongBaoRouter = require('../app/models/Thongbao');
 const OrdersRouter = require('../app/controllers/OrdersController');
 const restrict = require('../middleware');
 
+//
+router.put('/change-password', restrict.checkAdmin, AdminRouter.changePassword);
+
+
 // Lấy tất cả người dùng
 router.get('/users',restrict.checkAdmin, AdminRouter.getAllUsers);
 // Lấy người dùng theo ID

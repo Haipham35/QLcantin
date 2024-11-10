@@ -10,6 +10,8 @@ router.post('/login', loginRouter.login)
 router.post('/register', RegisterRouter.register);
 //
 router.get('/user-info', restrict.authenticateToken ,UserRouter.getUserInfo)
+router.put('/update-user', restrict.authenticateToken, UserRouter.updateUser)
+router.put('/change-password', restrict.authenticateToken, UserRouter.changePassword)
 //lam viec voi don hang
 router.post('/cancel-order/:order_id ', UserRouter.cancelOrder)
 router.post('/create-order', OrdersRouter.createOrder)
