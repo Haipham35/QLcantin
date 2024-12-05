@@ -2,6 +2,12 @@ const Users = require('../models/Users');
 const Categories = require('../models/Categories');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const Orders = require('../models/Orders');
+const Items = require('../models/Items');
+const { startOfMonth, endOfMonth } = require('date-fns');
+const {  Op } = require('sequelize');
+const sequelize = require('../models/connect/db');
+
 
 
 // Lấy tất cả người dùng
@@ -197,7 +203,77 @@ const changePassword = async (req, res) => {
   }
 
 };
+// Thống kê thu chi phía admin
 
+//thuchi trong 1 thang 
+const calculateRevenueAndExpense = async (req, res) => {
+  try {
+      // Kiểm tra quyền admin
+      const user = req.user;
+      if (!user || user.role !== 'admin') {
+          return res.status(403).json({ error: 'Forbidden: Only admins can perform this action' });
+      }
+
+      // Lấy tháng và năm từ request body (hoặc dùng tháng hiện tại)
+      const { month, year } = req.body;
+      if (!year || !month) {
+        return res.status(400).json({ error: 'Cần truyền vào year và month' });
+    }
+  
+      // Đảm bảo month là số từ 1 đến 12
+    if (month < 1 || month > 12) {
+    return res.status(400).json({ error: 'Tháng phải trong phạm vi từ 1 đến 12' });
+    }
+    const startOfMonthDate = startOfMonth(new Date(year, month - 1, 1)); 
+    const endOfMonthDate = endOfMonth(new Date(year, month - 1, 1));
+      
+      const totalthu = await Orders.sum('total_amount', {
+        where: {
+            status: {
+                [Op.like]: 'Xác nhận%' // Chỉ tính các đơn đã xác nhận
+            },
+            created_at: {
+                [Op.gte]: startOfMonthDate, // Bắt đầu từ ngày 1 tháng
+                [Op.lt]: endOfMonthDate, // Trước ngày 1 của tháng tiếp theo
+            }
+        }
+    });
+    console.log('Tổng thu:', totalthu);
+
+    //
+    const totalExpenseResult = await Items.findOne({
+      attributes: [
+        [sequelize.literal('SUM(price * available_quantity)'), 'totalExpense'],
+      ],
+      where: {
+        created_at: {
+          [Op.gte]: startOfMonthDate,
+          [Op.lt]: endOfMonthDate,
+        },
+      },
+    });
+
+    const totalExpense = totalExpenseResult?.dataValues?.totalExpense || 0;
+
+    console.log('Tổng chi:', totalExpense);
+
+  // Tính lãi suất
+  
+
+    // Trả về kết quả
+    res.json({
+        message: 'Thống kê thành công!',
+        data: {
+            totalRevenue: totalthu || 0,
+            totalExpense: totalExpense || 0,
+            
+        },
+    });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Có lỗi xảy ra khi thống kê dữ liệu' });
+  }
+};
 
 
 module.exports = {
@@ -212,5 +288,6 @@ module.exports = {
   updateCategory,
   deleteCategory,
   changePassword,
+  calculateRevenueAndExpense,
 
 };

@@ -53,7 +53,7 @@ Items.createItem = async (req, res) => {
   try {
     const categories = await Categories.findAll({
       where: {
-        name: ['Thức ăn', 'Thức uống']
+        name: ['Thức ăn', 'Thức uống', 'Đồ ăn nóng']
       },
       attributes: ['category_id']
     });
@@ -61,7 +61,24 @@ Items.createItem = async (req, res) => {
     if (categoryIds.indexOf(category_id) !== -1 && (!available_quantity || available_quantity === '')) {
       return res.status(400).json({ error: "available_quantity không được để trống" });
     }
+    // Kiểm tra nếu item đã tồn tại trong cơ sở dữ liệu
+    const existingItem = await Items.findOne({
+      where: {
+        name: name, 
+      },
+    });
 
+    if (existingItem) {
+      // Nếu item đã tồn tại, chỉ cập nhật available_quantity
+      const updatedItem = await existingItem.update({
+        available_quantity: parseInt(existingItem.available_quantity) + parseInt(available_quantity)
+      });
+
+      return res.status(200).json(updatedItem); // Trả về item đã được cập nhật
+    }
+    // if (existingItem) {
+    //   return res.status(400).json({ error: "Item with this name already exists" });
+    // }
     const newItem = await Items.create({
       name,
       description,

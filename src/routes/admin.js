@@ -47,7 +47,8 @@ router.put('/confirm-order/:order_id',restrict.checkAdmin, OrdersRouter.confirmO
 router.post('/cancel-order/:order_id ',restrict.checkAdmin, OrdersRouter.cancelOrder);
 router.get('/orders',restrict.checkAdmin, OrdersRouter.getAllOrders);
 router.get('/order/:order_id',restrict.checkAdmin, OrdersRouter.getOrderById);
-
+//Thu chi
+router.post('/revenue-trong-thang', restrict.checkAdmin, AdminRouter.calculateRevenueAndExpense);
 
 
 module.exports = router;

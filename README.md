@@ -25,7 +25,7 @@
 * Quản lý suất ăn theo từng ngày / bữa
   - từ bảng bữa ăn admin kiểm soát đc số lượng suất ăn đã đặt
 * Quản lý thu chi
-  - tổng thu sẽ là tổng hợp của 2 bảng suất ăn, bảng hóa đơn
+  - tổng thu sẽ là tổng hợp số tiền của của các order có status là 'Xác nhận%'
   - tổng chi lã là tổng hợp của bảng hàng hóa
 
 # Table(DataBase)
