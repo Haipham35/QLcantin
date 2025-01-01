@@ -4,6 +4,7 @@ const OrdersRouter = require('../app/controllers/OrdersController');
 const UserRouter = require('../app/controllers/UserController');
 const RegisterRouter = require('../app/controllers/RegisterController');
 const ThongKeRouter = require('../app/controllers/ThongKeController');
+const ItemRouter = require('../app/models/Items');
 const restrict = require('../middleware');
 const router = express.Router();
 
@@ -16,6 +17,8 @@ router.put('/change-password', restrict.authenticateToken, UserRouter.changePass
 //lam viec voi don hang
 router.post('/cancel-order/:order_id ',restrict.authenticateToken, UserRouter.cancelOrder)
 router.post('/create-order', restrict.authenticateToken, OrdersRouter.createOrder)
+//lam viec voi san pham 
+router.get('/items', restrict.authenticateToken, ItemRouter.getAllItems)
 
 //Thong Ke
 router.get('/thongke', restrict.authenticateToken, ThongKeRouter.thongKeUser); 
