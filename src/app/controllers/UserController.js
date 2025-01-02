@@ -65,22 +65,39 @@ const updateUser = async (req, res) => {
 
     try { 
         const existingUser = await Users.findByPk(userId);
-    
+        if (updatedData.username && updatedData.username !== existingUser.username) {
+            const userWithSameUsername = await Users.findOne({ where: { username: updatedData.username } });
+            if (userWithSameUsername) {
+              return res.status(400).json({ error: 'Ten dang nhap da ton tai' });
+            }
+        }
         if (!existingUser) {
           return res.status(404).json({ error: 'User not found' });
         }
     
         // Chỉ cho phép cập nhật full_name, email, phone_number, và password
-        if (updatedData.password) {
-          existingUser.password = updatedData.password;
-        }
+        existingUser.username = updatedData.username || existingUser.username;
         existingUser.full_name = updatedData.full_name || existingUser.full_name;
         existingUser.email = updatedData.email || existingUser.email;
         existingUser.phone_number = updatedData.phone_number || existingUser.phone_number;
     
         await existingUser.save();
+        const updatedUserData = {
+            user_id: existingUser.user_id,
+            username: existingUser.username,
+            full_name: existingUser.full_name,
+            email: existingUser.email,
+            phone_number: existingUser.phone_number,
+            role: existingUser.role
+        };
         
-        res.status(201).json({ message: 'User updated successfully' });
+        const newToken = jwt.sign(updatedUserData, 'black myth: wukong', { expiresIn: '1h' });
+        
+        
+        res.status(201).json({ 
+            message: 'User updated successfully kem new token', 
+            token: newToken 
+        });
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong...' });
@@ -106,8 +123,13 @@ const changePassword = async (req, res) => {
 
         // Mã hoá mật khẩu mới và lưu vào cơ sở dữ liệu
         const hashedPassword = await bcrypt.hash(newPassword, 10);
+        // console.log('Hashed change Password:', hashedPassword);
+
+        // Cập nhật trong DB
         user.password = hashedPassword;
+        // console.log('Before save - User Password:', user.password);
         await user.save();
+        // console.log('Before save - User Password:', user.password);
 
         res.status(200).json({ message: 'Password changed successfully' });
     } catch (error) {

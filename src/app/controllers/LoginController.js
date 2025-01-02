@@ -14,9 +14,11 @@ const login = async (req,res,next) => {
     if (!user) {
         return res.status(401).json({ message: 'Username or password is incorrect' });
     }
-
+        // console.log("Stored DB Password:", user.password); // Mật khẩu mã hóa trong DB
+        // console.log("Entered Password:", password);     
     // So sánh mật khẩu
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password Match:", isMatch);
     if (!isMatch) {
         return res.status(401).json({ message: 'Username or password is incorrect' });
     }
@@ -34,7 +36,7 @@ const login = async (req,res,next) => {
         { expiresIn: '1h' }
     );
     const decoded = jwt.decode(token);
-    console.log('Decoded Token:', decoded);
+    // console.log('Decoded Token:', decoded);
 
     // Trả về token và thông tin người dùng
     res.json({ token, user: { username: user.username, user_id: user.user_id, role: user.role } });

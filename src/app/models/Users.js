@@ -58,7 +58,7 @@ const Users = sequelize.define('Users', {
       }
     },
     beforeUpdate: async (users) => {
-      if (users.changed('password')) {
+      if (users.changed('password') && !users.password.startsWith('$2b$')) {
         const salt = await bcrypt.genSalt(10);
         users.password = await bcrypt.hash(users.password, salt);
       }
